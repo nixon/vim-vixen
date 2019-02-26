@@ -1,6 +1,5 @@
 import operations from 'shared/operations';
 import messages from 'shared/messages';
-import * as navigates from 'content/navigates';
 import * as focuses from 'content/focuses';
 import * as urls from '../../shared/urls';
 import * as consoleFrames from 'content/console-frames';
@@ -9,9 +8,11 @@ import * as markActions from './mark';
 import * as properties from 'shared/settings/properties';
 import ScrollPresenter from '../presenters/ScrollPresenter';
 import ClipboardPresenter from '../presenters/ClipboardPresenter';
+import NavigationPresenter from '../presenters/NavigationPresenter';
 
 let scrolls = new ScrollPresenter();
 let clipboardPresenter = new ClipboardPresenter();
+let navigates = new NavigationPresenter();
 
 // eslint-disable-next-line complexity, max-lines-per-function
 const exec = (operation, settings, addonEnabled) => {
@@ -67,22 +68,22 @@ const exec = (operation, settings, addonEnabled) => {
   case operations.MARK_JUMP_PREFIX:
     return markActions.startJump();
   case operations.NAVIGATE_HISTORY_PREV:
-    navigates.historyPrev(window);
+    navigates.goHistoryPrev(window);
     break;
   case operations.NAVIGATE_HISTORY_NEXT:
-    navigates.historyNext(window);
+    navigates.goHistoryNext(window);
     break;
   case operations.NAVIGATE_LINK_PREV:
-    navigates.linkPrev(window);
+    navigates.goLinkPrev(window);
     break;
   case operations.NAVIGATE_LINK_NEXT:
-    navigates.linkNext(window);
+    navigates.goLinkNext(window);
     break;
   case operations.NAVIGATE_PARENT:
-    navigates.parent(window);
+    navigates.goParent(window);
     break;
   case operations.NAVIGATE_ROOT:
-    navigates.root(window);
+    navigates.goRoot(window);
     break;
   case operations.FOCUS_INPUT:
     focuses.focusInput();

@@ -1,9 +1,9 @@
-import * as navigates from 'content/navigates';
+import NavigationPresenter from 'content/presenters/NavigationPresenter';
 
 const testRel = (done, rel, html) => {
-  const method = rel === 'prev' ? 'linkPrev' : 'linkNext';
+  const method = rel === 'prev' ? 'goLinkPrev' : 'goLinkNext';
   document.body.innerHTML = html;
-  navigates[method](window);
+  new NavigationPresenter()[method](window);
   setTimeout(() => {
     expect(document.location.hash).to.equal(`#${rel}`);
     done();
@@ -130,7 +130,7 @@ describe('navigates module', () => {
     // NOTE: not able to test location
     it('removes hash', () => {
       window.location.hash = '#section-1';
-      navigates.parent(window);
+      new NavigationPresenter().goParent(window);
       expect(document.location.hash).to.be.empty;
     });
   });
