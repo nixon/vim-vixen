@@ -1,6 +1,5 @@
 import operations from 'shared/operations';
 import messages from 'shared/messages';
-import * as focuses from 'content/focuses';
 import * as urls from '../../shared/urls';
 import * as consoleFrames from 'content/console-frames';
 import * as addonActions from './addon';
@@ -9,10 +8,12 @@ import * as properties from 'shared/settings/properties';
 import ScrollPresenter from '../presenters/ScrollPresenter';
 import ClipboardPresenter from '../presenters/ClipboardPresenter';
 import NavigationPresenter from '../presenters/NavigationPresenter';
+import PagePresenter from '../presenters/PagePresenter';
 
 let scrolls = new ScrollPresenter();
 let clipboardPresenter = new ClipboardPresenter();
 let navigates = new NavigationPresenter();
+let pagePresenter = new PagePresenter();
 
 // eslint-disable-next-line complexity, max-lines-per-function
 const exec = (operation, settings, addonEnabled) => {
@@ -86,7 +87,7 @@ const exec = (operation, settings, addonEnabled) => {
     navigates.goRoot(window);
     break;
   case operations.FOCUS_INPUT:
-    focuses.focusInput();
+    pagePresenter.focusInput();
     break;
   case operations.URLS_YANK:
     clipboardPresenter.write(window.location.href);
