@@ -1,7 +1,9 @@
 import * as markActions from 'content/actions/mark';
-import * as scrolls from 'content/scrolls';
 import * as consoleFrames from 'content/console-frames';
 import * as properties from 'shared/settings/properties';
+import ScrollPresenter from '../../presenters/ScrollPresenter';
+
+let scrolls = new ScrollPresenter();
 
 const cancelKey = (key) => {
   return key.key === 'Esc' || key.key === '[' && key.ctrlKey;

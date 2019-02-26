@@ -1,6 +1,5 @@
 import operations from 'shared/operations';
 import messages from 'shared/messages';
-import * as scrolls from 'content/scrolls';
 import * as navigates from 'content/navigates';
 import * as focuses from 'content/focuses';
 import * as urls from 'content/urls';
@@ -8,6 +7,9 @@ import * as consoleFrames from 'content/console-frames';
 import * as addonActions from './addon';
 import * as markActions from './mark';
 import * as properties from 'shared/settings/properties';
+import ScrollPresenter from '../presenters/ScrollPresenter';
+
+let scrolls = new ScrollPresenter();
 
 // eslint-disable-next-line complexity, max-lines-per-function
 const exec = (operation, settings, addonEnabled) => {

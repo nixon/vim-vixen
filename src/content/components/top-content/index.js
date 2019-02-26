@@ -3,7 +3,9 @@ import FollowController from './follow-controller';
 import FindComponent from './find';
 import * as consoleFrames from '../../console-frames';
 import messages from 'shared/messages';
-import * as scrolls from 'content/scrolls';
+import ScrollPresenter from '../../presenters/ScrollPresenter';
+
+let scrolls = new ScrollPresenter();
 
 export default class TopContent {
 
