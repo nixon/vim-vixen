@@ -2,14 +2,16 @@ import operations from 'shared/operations';
 import messages from 'shared/messages';
 import * as navigates from 'content/navigates';
 import * as focuses from 'content/focuses';
-import * as urls from 'content/urls';
+import * as urls from '../../shared/urls';
 import * as consoleFrames from 'content/console-frames';
 import * as addonActions from './addon';
 import * as markActions from './mark';
 import * as properties from 'shared/settings/properties';
 import ScrollPresenter from '../presenters/ScrollPresenter';
+import ClipboardPresenter from '../presenters/ClipboardPresenter';
 
 let scrolls = new ScrollPresenter();
+let clipboardPresenter = new ClipboardPresenter();
 
 // eslint-disable-next-line complexity, max-lines-per-function
 const exec = (operation, settings, addonEnabled) => {
@@ -86,13 +88,18 @@ const exec = (operation, settings, addonEnabled) => {
     focuses.focusInput();
     break;
   case operations.URLS_YANK:
-    urls.yank(window);
+    clipboardPresenter.write(window.location.href);
     consoleFrames.postInfo('Current url yanked');
     break;
-  case operations.URLS_PASTE:
-    urls.paste(
-      window, operation.newTab ? operation.newTab : false, settings.search
-    );
+  case operations.URLS_PASTE: {
+    let value = clipboardPresenter.read();
+    let url = urls.searchUrl(value, settings.search);
+    browser.runtime.sendMessage({
+      type: messages.OPEN_URL,
+      url,
+      newTab: Boolean(operation.newTab),
+    });
+  }
     break;
   default:
     browser.runtime.sendMessage({
