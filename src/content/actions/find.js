@@ -7,7 +7,9 @@
 
 import messages from 'shared/messages';
 import actions from 'content/actions';
-import * as consoleFrames from '../console-frames';
+import ConsolePresenter from '../presenters/ConsolePresenter';
+
+let consolePresenter = new ConsolePresenter();
 
 const find = (string, backwards) => {
   let caseSensitive = false;
@@ -41,13 +43,13 @@ const findNext = async(currentKeyword, reset, backwards) => {
     });
   }
   if (!keyword) {
-    return consoleFrames.postError('No previous search keywords');
+    return consolePresenter.showError('No previous search keywords');
   }
   let found = find(keyword, backwards);
   if (found) {
-    consoleFrames.postInfo('Pattern found: ' + keyword);
+    consolePresenter.showInfo('Pattern found: ' + keyword);
   } else {
-    consoleFrames.postError('Pattern not found: ' + keyword);
+    consolePresenter.showError('Pattern not found: ' + keyword);
   }
 
   return {

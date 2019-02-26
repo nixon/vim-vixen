@@ -1,7 +1,6 @@
 import operations from 'shared/operations';
 import messages from 'shared/messages';
 import * as urls from '../../shared/urls';
-import * as consoleFrames from 'content/console-frames';
 import * as addonActions from './addon';
 import * as markActions from './mark';
 import * as properties from 'shared/settings/properties';
@@ -9,11 +8,13 @@ import ScrollPresenter from '../presenters/ScrollPresenter';
 import ClipboardPresenter from '../presenters/ClipboardPresenter';
 import NavigationPresenter from '../presenters/NavigationPresenter';
 import PagePresenter from '../presenters/PagePresenter';
+import ConsolePresenter from '../presenters/ConsolePresenter';
 
 let scrolls = new ScrollPresenter();
 let clipboardPresenter = new ClipboardPresenter();
 let navigates = new NavigationPresenter();
 let pagePresenter = new PagePresenter();
+let consolePresenter = new ConsolePresenter();
 
 // eslint-disable-next-line complexity, max-lines-per-function
 const exec = (operation, settings, addonEnabled) => {
@@ -91,7 +92,7 @@ const exec = (operation, settings, addonEnabled) => {
     break;
   case operations.URLS_YANK:
     clipboardPresenter.write(window.location.href);
-    consoleFrames.postInfo('Current url yanked');
+    consolePresenter.showInfo('Current url yanked');
     break;
   case operations.URLS_PASTE: {
     let value = clipboardPresenter.read();

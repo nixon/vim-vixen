@@ -1,9 +1,10 @@
 import * as markActions from 'content/actions/mark';
-import * as consoleFrames from 'content/console-frames';
 import * as properties from 'shared/settings/properties';
 import ScrollPresenter from '../../presenters/ScrollPresenter';
+import ConsolePresenter from '../../presenters/ConsolePresenter';
 
 let scrolls = new ScrollPresenter();
+let consolePresenter = new ConsolePresenter();
 
 const cancelKey = (key) => {
   return key.key === 'Esc' || key.key === '[' && key.ctrlKey;
@@ -35,7 +36,7 @@ export default class MarkComponent {
     }
 
     if (key.ctrlKey || key.metaKey || key.altKey) {
-      consoleFrames.postError('Unknown mark');
+      consolePresenter.showError('Unknown mark');
     } else if (globalKey(key.key) && markStage.setMode) {
       this.doSetGlobal(key);
     } else if (globalKey(key.key) && markStage.jumpMode) {
@@ -57,7 +58,7 @@ export default class MarkComponent {
 
   doJump(marks, key, smoothscroll) {
     if (!marks[key.key]) {
-      consoleFrames.postError('Mark is not set');
+      consolePresenter.showError('Mark is not set');
       return;
     }
 
