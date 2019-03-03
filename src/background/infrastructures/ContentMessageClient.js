@@ -1,7 +1,7 @@
 import messages from '../../shared/messages';
 
 export default class ContentMessageClient {
-  async broadcastSettingsChanged() {
+  async broadcastSettingsChanged(settings) {
     let tabs = await browser.tabs.query({});
     for (let tab of tabs) {
       if (tab.url.startsWith('about:')) {
@@ -9,6 +9,7 @@ export default class ContentMessageClient {
       }
       browser.tabs.sendMessage(tab.id, {
         type: messages.SETTINGS_CHANGED,
+        settings,
       });
     }
   }

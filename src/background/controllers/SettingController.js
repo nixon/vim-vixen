@@ -12,7 +12,7 @@ export default class SettingController {
   }
 
   async reload() {
-    await this.settingUseCase.reload();
-    this.contentMessageClient.broadcastSettingsChanged();
+    let newSettings = await this.settingUseCase.reload();
+    this.contentMessageClient.broadcastSettingsChanged(newSettings);
   }
 }

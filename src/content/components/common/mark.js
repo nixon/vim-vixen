@@ -1,10 +1,11 @@
 import * as markActions from 'content/actions/mark';
-import * as properties from 'shared/settings/properties';
 import ScrollPresenter from '../../presenters/ScrollPresenter';
 import ConsolePresenter from '../../presenters/ConsolePresenter';
+import SettingRepository from '../../repositories/SettingRepository';
 
 let scrolls = new ScrollPresenter();
 let consolePresenter = new ConsolePresenter();
+let settingRepository = new SettingRepository();
 
 const cancelKey = (key) => {
   return key.key === 'Esc' || key.key === '[' && key.ctrlKey;
@@ -22,9 +23,9 @@ export default class MarkComponent {
 
   // eslint-disable-next-line max-statements
   key(key) {
-    let { mark: markStage, setting } = this.store.getState();
-    let smoothscroll = setting.properties.smoothscroll ||
-      properties.defaults.smoothscroll;
+    let { mark: markStage } = this.store.getState();
+    let settings = settingRepository.get();
+    let smoothscroll = settings.properties.smoothscroll;
 
     if (!markStage.setMode && !markStage.jumpMode) {
       return false;

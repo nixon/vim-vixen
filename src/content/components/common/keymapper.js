@@ -2,6 +2,9 @@ import * as inputActions from 'content/actions/input';
 import * as operationActions from 'content/actions/operation';
 import operations from 'shared/operations';
 import * as keyUtils from 'shared/utils/keys';
+import SettingRepository from '../../repositories/SettingRepository';
+
+let settingRepository = new SettingRepository();
 
 const mapStartsWith = (mapping, keys) => {
   if (mapping.length < keys.length) {
@@ -26,7 +29,8 @@ export default class KeymapperComponent {
 
     let state = this.store.getState();
     let input = state.input;
-    let keymaps = new Map(state.setting.keymaps);
+    let settings = settingRepository.get();
+    let keymaps = this.keymapMapping(settings.keymaps);
 
     let matched = Array.from(keymaps.keys()).filter((mapping) => {
       return mapStartsWith(mapping, input.keys);
@@ -49,10 +53,20 @@ export default class KeymapperComponent {
     }
     let operation = keymaps.get(matched[0]);
     let act = operationActions.exec(
-      operation, state.setting, state.addon.enabled
+      operation, state.addon.enabled
     );
     this.store.dispatch(act);
     this.store.dispatch(inputActions.clearKeys());
     return true;
+  }
+
+  keymapMapping(keymaps) {
+    let entries = Object.entries(keymaps).map((entry) => {
+      return [
+        keyUtils.fromMapKeys(entry[0]),
+        entry[1],
+      ];
+    });
+    return new Map(entries);
   }
 }

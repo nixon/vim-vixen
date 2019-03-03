@@ -2,9 +2,6 @@ export default {
   // Enable/disable
   ADDON_SET_ENABLED: 'addon.set.enabled',
 
-  // Settings
-  SETTING_SET: 'setting.set',
-
   // User input
   INPUT_KEY_PRESS: 'input.key.press',
   INPUT_CLEAR_KEYS: 'input.clear.keys',

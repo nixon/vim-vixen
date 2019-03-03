@@ -3,23 +3,24 @@ import messages from 'shared/messages';
 import * as urls from '../../shared/urls';
 import * as addonActions from './addon';
 import * as markActions from './mark';
-import * as properties from 'shared/settings/properties';
 import ScrollPresenter from '../presenters/ScrollPresenter';
 import ClipboardPresenter from '../presenters/ClipboardPresenter';
 import NavigationPresenter from '../presenters/NavigationPresenter';
 import PagePresenter from '../presenters/PagePresenter';
 import ConsolePresenter from '../presenters/ConsolePresenter';
+import SettingRepository from '../repositories/SettingRepository';
 
 let scrolls = new ScrollPresenter();
 let clipboardPresenter = new ClipboardPresenter();
 let navigates = new NavigationPresenter();
 let pagePresenter = new PagePresenter();
 let consolePresenter = new ConsolePresenter();
+let settingRepository = new SettingRepository();
 
 // eslint-disable-next-line complexity, max-lines-per-function
-const exec = (operation, settings, addonEnabled) => {
-  let smoothscroll = settings.properties.smoothscroll ||
-    properties.defaults.smoothscroll;
+const exec = (operation, addonEnabled) => {
+  let settings = settingRepository.get();
+  let smoothscroll = settings.properties.smoothscroll;
   switch (operation.type) {
   case operations.ADDON_ENABLE:
     return addonActions.enable();

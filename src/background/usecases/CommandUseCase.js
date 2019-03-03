@@ -114,8 +114,9 @@ export default class CommandIndicator {
     }
     let [name, value] = parsers.parseSetOption(keywords, properties.types);
     await this.settingRepository.setProperty(name, value);
+    let newSettings = await this.settingRepository.get();
 
-    return this.contentMessageClient.broadcastSettingsChanged();
+    return this.contentMessageClient.broadcastSettingsChanged(newSettings);
   }
 
   async urlOrSearch(keywords) {

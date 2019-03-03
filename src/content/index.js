@@ -4,6 +4,9 @@ import promise from 'redux-promise';
 import reducers from 'content/reducers';
 import TopContentComponent from './components/top-content';
 import FrameContentComponent from './components/frame-content';
+import SettingController from './controllers/SettingController';
+
+new SettingController(); // eslint-disable-line no-new
 
 const store = createStore(
   reducers,

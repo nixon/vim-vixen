@@ -2,10 +2,15 @@ import InputComponent from './input';
 import FollowComponent from './follow';
 import MarkComponent from './mark';
 import KeymapperComponent from './keymapper';
-import * as settingActions from 'content/actions/setting';
 import messages from 'shared/messages';
 import * as addonActions from '../../actions/addon';
 import * as blacklists from 'shared/blacklists';
+
+import SettingUseCase from '../../usecases/SettingUseCase';
+import SettingRepository from '../../repositories/SettingRepository';
+
+let settingUseCase = new SettingUseCase();
+let settingRepository = new SettingRepository();
 
 export default class Common {
   constructor(win, store) {
@@ -31,8 +36,6 @@ export default class Common {
   onMessage(message) {
     let { enabled } = this.store.getState().addon;
     switch (message.type) {
-    case messages.SETTINGS_CHANGED:
-      return this.reloadSettings();
     case messages.ADDON_TOGGLE_ENABLED:
       this.store.dispatch(addonActions.setEnabled(!enabled));
     }
@@ -40,7 +43,8 @@ export default class Common {
 
   reloadSettings() {
     try {
-      this.store.dispatch(settingActions.load()).then(({ value: settings }) => {
+      settingUseCase.loadSetting().then(() => {
+        let settings = settingRepository.get();
         let enabled = !blacklists.includes(
           settings.blacklist, this.win.location.href
         );

@@ -2,6 +2,9 @@ import * as followControllerActions from 'content/actions/follow-controller';
 import messages from 'shared/messages';
 import HintKeyProducer from 'content/hint-key-producer';
 import * as properties from 'shared/settings/properties';
+import SettingRepository from '../../repositories/SettingRepository';
+
+let settingRepository = new SettingRepository();
 
 const broadcastMessage = (win, message) => {
   let json = JSON.stringify(message);
@@ -86,17 +89,21 @@ export default class FollowController {
     case 'Delete':
       this.store.dispatch(followControllerActions.backspace());
       break;
-    default:
-      if (this.hintchars().includes(key)) {
+    default: {
+      let settings = settingRepository.get();
+      if (settings.properties.hintchars.includes(key)) {
         this.store.dispatch(followControllerActions.keyPress(key));
       }
       break;
+    }
     }
     return true;
   }
 
   count() {
-    this.producer = new HintKeyProducer(this.hintchars());
+    let settings = settingRepository.get();
+
+    this.producer = new HintKeyProducer(settings.properties.hintchars);
     let doc = this.win.document;
     let viewWidth = this.win.innerWidth || doc.documentElement.clientWidth;
     let viewHeight = this.win.innerHeight || doc.documentElement.clientHeight;
